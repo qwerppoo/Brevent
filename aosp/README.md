@@ -1,5 +1,18 @@
 # How To Patch (English, Chinese see below)
 
+```
+shell> command
+```
+
+It means to run `command` in `PC`'s `bash` or `cmd`, it applies to Linux, Mac OS X, or Windows. If you never hear about `PC` or `bash`, or `cmd`, please give up.
+
+```
+<path/to/XXX>
+<dir/to/XXX>
+```
+
+It means the path or directory of `XXX`, please input `XXX` without `<` or `>`.
+
 ## Requirements
 
 - `adb`, part of Android platform tools
@@ -22,7 +35,9 @@ shell> adb pull /system/framework
 ## Convert services to smali
 
 ### Android 4.4 or non-odex version (services.jar > 1M)
+```
 shell> java -Xms1g -jar baksmali-2.2b4.jar d services.jar -o services
+```
 
 ### Android 5.0 - Android 5.1
 ```
@@ -53,15 +68,17 @@ Get `patch.py` from apk, you can rename apk to zip, then find it in `assets/patc
 shell> python <path/to/patch.py> -a apk -s services
 ```
 
+There should be 14 patches for 4.4, and 15 patches for 5.0+.
+
 ## Convert patched services to services.jar
 ```
 shell> java -Xms1g -jar smali-2.2b4.jar a -o classes.dex services
 shell> jar -cvf services.jar classes.dex
 ```
 
-# 怎样打补丁
+Now it's finished. Please backup your devices, and replace device's `/system/framework/services.jar` with the new `PC`'s `services.jar`, then delete all `services.odex` in your devices; install `Brevent`, then reboot. Again, please backup your devices.
 
-* 说明
+# 怎样打补丁
 
 ```
 命令行> 命令
@@ -161,7 +178,7 @@ shell> jar -cvf services.jar classes.dex
 
 执行完以后，会生成中间过程`classes.dex`以及目标文件`services.jar`。
 
-现在，补丁完成，请做好**备份**，替换`设备`中的相应文件，并删除`设备`中原始的`services.odex`，重启。
+现在，补丁完成，请做好**备份**，使用新生成的`services.jar`替换`设备`中的`/system/framework/services.jar`，并删除`设备`中的所有`services.odex`，安装`黑域`，重启。请一定要做好备份。
 
 [adb-win]: http://dl.google.com/android/repository/platform-tools_r25-windows.zip
 [adb-mac]: http://dl.google.com/android/repository/platform-tools_r25-macosx.zip
