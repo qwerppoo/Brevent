@@ -34,19 +34,19 @@ shell> adb pull /system/framework
 
 ## Convert services to smali
 
-### Android 4.4 or non-odex version (services.jar > 1M)
+### Non-`odex` version, `services.jar` should be bigger than `1M`
 ```
 shell> java -Xms1g -jar baksmali-2.2b4.jar d services.jar -o services
 ```
 
-### Android 5.0 - Android 5.1
+### `odex` version, Android 5.0 - Android 5.1
 ```
 shell> java -Xms1g -jar oat2dex.jar boot <path/to/boot.oat>
 shell> java -Xms1g -jar oat2dex.jar <path/to/services.odex> dex
 shell> java -Xms1g -jar baksmali-2.2b4.jar d <path/to/services.dex> -o services
 ```
 
-### Android 6.0 - Android 7.1
+### `odex` version, Android 6.0 - Android 7.1
 
 **Note**: If `boot.oat` or `services.odex` exists in more than one directory, you can just choose **any** one.
 
@@ -105,7 +105,7 @@ Now it's finished. Please backup your devices, and replace device's `/system/fra
 - [patch.py][patch.py](可选), 因为也能从黑域 APK 中提取
 - [oat2dex][oat2dex](可选), 版本 v0.86，用于 Android 5.0 与 5.1 解包，因为 baksmali 不支持 Android 5.0 - 5.1
 
-## 从设备中获取 services.jar, services.odex, boot.oat
+## 从设备中获取 services.jar, services.odex, boot.oat等文件 (后两个可能不存在)
 
 ```
 命令行> adb pull /system/framework
@@ -115,7 +115,7 @@ Now it's finished. Please backup your devices, and replace device's `/system/fra
 
 ## 把 services 转成 smali
 
-### Android 4.4 或者非 odex 优化版本 (services.jar 在 1M 以上)
+### 非`odex`优化版本，`services.jar`应该在`1M`以上
 
 ```
 命令行> java -Xms1g -jar baksmali-2.2b4.jar d <services.jar路径,1M以上> -o services
@@ -123,7 +123,7 @@ Now it's finished. Please backup your devices, and replace device's `/system/fra
 
 执行完以后，会生成一个新目录`services`。
 
-### Android 5.0 - Android 5.1
+### `odex`优化版本，Android 5.0 - Android 5.1
 
 ```
 命令行> java -Xms1g -jar oat2dex.jar boot <boot.oat路径>
@@ -133,7 +133,7 @@ Now it's finished. Please backup your devices, and replace device's `/system/fra
 
 执行完以后，会生成一个新目录`services`以及中间过程目录`odex`与`dex`。
 
-### Android 6.0 - Android 7.1
+### `odex`优化版本，Android 6.0 - Android 7.1
 
 **注意**: Android 7.0 及以上版本中的`boot.oat`依赖同目录下的其它文件，请不要移动`boot.oat`，直接指定它所在的目录就好。
 
